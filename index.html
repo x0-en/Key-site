@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="og:title" content="Key Generator">
+    <meta property="og:description" content="Key Generator For Our Games">
+    <meta property="og:image" content="https://media.tenor.com/25kwHlVyxAEAAAAi/rainbow-heart.gif">
+    <title>Key Generator</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        @font-face {
+            font-family: 'Paperlogy-8ExtraBold';
+            src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408-3@1.0/Paperlogy-8ExtraBold.woff2') format('woff2');
+            font-weight: 800;
+            font-style: normal;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Paperlogy-8ExtraBold', sans-serif;
+        }
+        
+        body {
+            background-color: #171717;
+            color: #e0e0e0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://media.discordapp.net/attachments/1345086960057712690/1347182929989730315/image.png?ex=67cb8e1f&is=67ca3c9f&hm=e9bb9918fb4610e3d4c7ebe8f60092996601021fe81cd3a14f71ab50bfd55965&=&format=webp&quality=lossless&width=1280&height=720');
+            background-size: cover;
+            background-position: center;
+            filter: blur(20px) brightness(0.5);
+            opacity: 0.4;
+            z-index: -1;
+        }
+        
+        body::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to right, #333333, #222222, #0a0a0a);
+            opacity: 0.8;
+            z-index: -1;
+        }
+        
+        .my_box {
+            background: rgba(30, 30, 30, 0.15);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 30px;
+            width: 90%;
+            max-width: 450px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+            position: relative;
+            transition: all 0.3s;
+        }
+        
+        .my_box:hover {
+            box-shadow: 0 4px 40px rgba(255, 255, 255, 0.15);
+        }
+        
+        .title_text {
+            color: #ffffff;
+            text-align: center;
+            margin-bottom: 20px;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+        
+        .work_area {
+            position: relative;
+            min-height: 130px;
+        }
+        
+        .name_input_wrap {
+            opacity: 1;
+            transition: opacity 0.5s ease;
+        }
+        
+        .name_input_wrap.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .name_box, .key_box {
+            width: 100%;
+            padding: 14px;
+            background: rgba(20, 20, 20, 0.2);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            color: #ffffff;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+        
+        .name_box:focus {
+            border-color: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+        }
+        
+        .key_wrap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            pointer-events: none;
+        }
+        
+        .key_wrap.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        
+        .key_box {
+            background: rgba(35, 35, 35, 0.3);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.08);
+        }
+        
+        .name_box::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+        
+        .no_name_msg {
+            color: #ff6b6b;
+            font-size: 14px;
+            margin-top: 8px;
+            display: none;
+            text-align: center;
+        }
+        
+        .make_key_btn {
+            width: 100%;
+            padding: 14px;
+            background: rgba(80, 80, 80, 0.15);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 15px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .make_key_btn:before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0) 100%);
+            transform: rotate(45deg) translateX(-100%);
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+        
+        .make_key_btn:hover {
+            background: linear-gradient(to right, rgba(186, 104, 200, 0.15), rgba(255, 214, 102, 0.15));
+            transform: translateY(-2px);
+            box-shadow: 0 0 15px rgba(186, 104, 200, 0.15), 0 0 30px rgba(255, 214, 102, 0.1);
+            border-color: rgba(186, 104, 200, 0.3);
+        }
+        
+        .make_key_btn:hover:before {
+            animation: shimmy 1.5s ease-in-out;
+            opacity: 1;
+        }
+        
+        @keyframes shimmy {
+            0% { transform: translateX(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) rotate(45deg); }
+        }
+        
+        .work_area.blur_effect {
+            filter: blur(8px);
+        }
+        
+        .wait_spin {
+            position: absolute;
+            top: 60%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 20;
+            display: none;
+            text-align: center;
+        }
+        
+        .spin_circle {
+            display: inline-block;
+            width: 45px;
+            height: 45px;
+            border: 3px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            border-top-color: #7a5bff;
+            animation: spiny 1s ease-in-out infinite;
+            margin-bottom: 15px;
+        }
+        
+        @keyframes spiny {
+            to { transform: rotate(360deg); }
+        }
+        
+        .making_text {
+            color: #ffffff;
+            font-size: 16px;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+        }
+        
+        .copybtn {
+            background: linear-gradient(to right, rgba(186, 104, 200, 0.15), rgba(255, 214, 102, 0.15));
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            border: 1px solid rgba(186, 104, 200, 0.2);
+            box-shadow: 0 0 15px rgba(186, 104, 200, 0.08), 0 0 20px rgba(255, 214, 102, 0.05);
+        }
+        
+        .copybtn:hover {
+            background: linear-gradient(to right, rgba(186, 104, 200, 0.25), rgba(255, 214, 102, 0.25));
+            box-shadow: 0 0 15px rgba(186, 104, 200, 0.2), 0 0 30px rgba(255, 214, 102, 0.1);
+            border-color: rgba(255, 214, 102, 0.3);
+        }
+        
+        .copy_good {
+            display: none;
+            text-align: center;
+            color: #00cec9;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+        
+        .discord_btn {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: rgba(40, 40, 40, 0.2);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.3s ease;
+        }
+        
+        .discord_btn:hover {
+            transform: scale(1.1);
+            background: rgba(60, 60, 60, 0.3);
+        }
+        
+        .discord_btn img {
+            max-width: 28px;
+            max-height: 28px;
+        }
+        
+        /* Toast Message */
+        .toast_box {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: rgba(20, 20, 20, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-left: 4px solid rgba(186, 104, 200, 0.7);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 6px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            font-size: 14px;
+            transform: translateX(150%) scale(0.9);
+            opacity: 0;
+            transition: transform 1.5s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 1.5s ease, scale 1.5s ease;
+            z-index: 1000;
+            max-width: 300px;
+        }
+        
+        .toast_box.show {
+            transform: translateX(0) scale(1);
+            opacity: 1;
+        }
+        
+        .toast_box.success {
+            border-left-color: rgba(72, 219, 90, 0.7);
+        }
+        
+        .toast_box.info {
+            border-left-color: rgba(0, 206, 201, 0.7);
+        }
+        
+        .toast_box.warning {
+            border-left-color: rgba(255, 214, 102, 0.7);
+        }
+        
+        .toast_icon {
+            margin-right: 10px;
+            font-size: 16px;
+        }
+        
+        @media (max-width: 600px) {
+            .my_box {
+                padding: 25px 20px;
+                width: 95%;
+            }
+            
+            .discord_btn {
+                width: 40px;
+                height: 40px;
+            }
+            
+            .discord_btn img {
+                max-width: 24px;
+                max-height: 24px;
+            }
+            
+            .toast_box {
+                bottom: 20px;
+                right: 20px;
+                left: 20px;
+                max-width: calc(100% - 40px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="my_box">
+        <h1 class="title_text">Key Generator</h1>
+        
+        <div class="work_area" id="content_div">
+            <div class="name_input_wrap" id="input_div">
+                <input type="text" id="userName" class="name_box" placeholder="Enter your Roblox name" autocomplete="off">
+                <div class="no_name_msg" id="error_no_name">Please enter your Roblox name to generate key...</div>
+                <button id="btnMakeKey" class="make_key_btn" onclick="makeKeyForRoblox()"><i class="fas fa-key"></i> Generate Key</button>
+            </div>
+            
+            <div class="key_wrap" id="output_div">
+                <input type="text" id="userKey" class="key_box" readonly>
+                <button id="btnCopy" class="make_key_btn copybtn" onclick="copyKeyText()"><i class="fas fa-copy"></i> Copy Key</button>
+            </div>
+        </div>
+        
+        <div class="wait_spin" id="loading_part">
+            <div class="spin_circle"></div>
+            <p class="making_text">Please wait...</p>
+        </div>
+    </div>
+    
+    <div class="discord_btn" onclick="window.open('https://discord.gg/clovers', '_blank')">
+        <img src="https://cdn-icons-png.flaticon.com/512/5968/5968756.png" alt="Discord">
+    </div>
+    
+    <!-- ♥ -->
+    <div class="toast_box" id="toastBox">
+        <span class="toast_icon"><i class="fas fa-info-circle"></i></span>
+        <span id="toastMessage">This is a notification message</span>
+    </div>
+    
+    <script>
+        console.log("%cWarning!", "color: red; font-size: 100px;");
+        console.log("%cYou are too cute!", "color: pink; font-size: 40px;");
+        console.log("%cSo please don't say love = false", "color: pink; font-size: 30px;");
+        console.log("%c❤", "color: pink; font-size: 50px;");
+        
+        let my_love_value = null;
+        let current_toast_timeout = null;
+        
+        function showToast(message, type = 'info', duration = 3000) {
+            const toast = document.getElementById('toastBox');
+            const toastMsg = document.getElementById('toastMessage');
+            const iconElement = toast.querySelector('.toast_icon i');
+            
+            if (current_toast_timeout) {
+                clearTimeout(current_toast_timeout);
+            }
+            toast.className = 'toast_box';
+            
+            if (type === 'success') {
+                iconElement.className = 'fas fa-check-circle';
+                toast.classList.add('success');
+            } else if (type === 'warning') {
+                iconElement.className = 'fas fa-exclamation-circle';
+                toast.classList.add('warning');
+            } else {
+                iconElement.className = 'fas fa-info-circle';
+                toast.classList.add('info');
+            }
+            
+            toastMsg.textContent = message;
+
+
+
+
+
+
+          
+            toast.classList.add('show');
+
+          
+            current_toast_timeout = setTimeout(() => {
+                toast.classList.remove('show');
+            }, duration);
+        }
+        
+        window.onload = function() {
+            document.getElementById('userName').focus();
+            setTimeout(() => {
+                showToast('You have permission to generate key!', 'success', 4000);
+            }, 500);
+        };
+        
+        Object.defineProperty(window, 'love', {
+            set: function(v) {
+                if (v === false) {
+                    if (my_love_value === true) {
+                        console.log("%cWhy do you keep changing your mind?", "color: red; font-size: 50px;");
+                    } else {
+                        console.log("%cWell, I don't like you either~", "color: pink; font-size: 30px;");
+                    }
+                    my_love_value = v;
+                } else if (v === true) {
+                    if (my_love_value === false) {
+                        console.log("%c❤", "color: pink; font-size: 100px;");
+                    } else {
+                        console.log("%cThank you!!@", "color: green; font-size: 30px;");
+                    }
+                    my_love_value = v;
+                }
+            },
+            get: function() {
+                return my_love_value;
+            },
+            configurable: true
+        });
+        
+        setInterval(function() {
+            if (my_love_value === false && document.body.contains(document.body.lastChild)) {
+                console.log("%cSo what?", "color: black; font-size: 130px;");
+                setTimeout(function() {
+                    window.close();
+                }, 2000);
+            }
+        }, 1000);
+        
+        function changeLetters(txt, magicNum) {
+            let hahaha = [];
+            for (let i = 0; i < txt.length; i++) {
+                hahaha.push(txt.charCodeAt(i) ^ magicNum);
+            }
+            return String.fromCharCode(...hahaha);
+        }
+        
+        function secretText(txt) {
+            return btoa(txt);
+        }
+        
+        function makeKeyForRoblox() {
+            const namae = document.getElementById('userName').value.trim();
+            
+            if (namae === "") {
+                document.getElementById('error_no_name').style.display = 'block';
+                document.getElementById('userName').classList.add('error_input');
+                
+                setTimeout(function() {
+                    document.getElementById('userName').classList.remove('error_input');
+                }, 1000);
+                
+                return;
+            } else {
+                document.getElementById('error_no_name').style.display = 'none';
+            }
+            
+            document.getElementById('content_div').classList.add('blur_effect');
+            document.getElementById('loading_part').style.display = 'block';
+            document.getElementById('input_div').classList.add('hidden');
+            
+            showToast('Generating your key...', 'info');
+            
+            let fakeDelay = Math.random() * 1000 + 800;
+            
+            setTimeout(function() {
+                doSecretMagic(namae);
+            }, fakeDelay);
+        }
+        
+        function doSecretMagic(namae) {
+            const magicNumber = 42;
+            const jumbledText = changeLetters(namae, magicNumber);
+            const finalKey = secretText(jumbledText);
+            
+            document.getElementById('userKey').value = finalKey;
+            document.getElementById('loading_part').style.display = 'none';
+            document.getElementById('content_div').classList.remove('blur_effect');
+            document.getElementById('output_div').classList.add('show');
+            
+            showToast('Key generated successfully!', 'success');
+        }
+        
+        function copyKeyText() {
+            const keyText = document.getElementById('userKey').value;
+            
+            if (keyText === "") {
+                return;
+            }
+            
+            navigator.clipboard.writeText(keyText)
+                .then(() => {
+                    showToast('Key copied to clipboard!', 'success');
+                    const msgDiv = document.getElementById('copy_ok_msg');
+                    msgDiv.style.display = 'block';
+                    
+                    setTimeout(() => {
+                        msgDiv.style.display = 'none';
+                    }, 2000);
+                })
+                .catch(() => {
+
+                    const textArea = document.createElement('textarea');
+                    textArea.value = keyText;
+                    document.body.appendChild(textArea);
+                    textArea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textArea);
+                    
+                    showToast('Key copied to clipboard!', 'success');
+                    const msgDiv = document.getElementById('copy_ok_msg');
+                    msgDiv.style.display = 'block';
+                    
+                    setTimeout(() => {
+                        msgDiv.style.display = 'none';
+                    }, 2000);
+                });
+        }
+        
+        function resetEverything() {
+            document.getElementById('output_div').classList.remove('show');
+            document.getElementById('userName').value = '';
+            
+            setTimeout(function() {
+                document.getElementById('input_div').classList.remove('hidden');
+                document.getElementById('userName').focus();
+            }, 300);
+            
+            showToast('Ready to generate a new key', 'info');
+        }
+        
+        document.getElementById('userKey').addEventListener('dblclick', resetEverything);
+        
+        document.getElementById('userName').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                makeKeyForRoblox();
+            }
+        });
+        
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && document.getElementById('output_div').classList.contains('show')) {
+                resetEverything();
+            }
+        });
+    </script>
+</body>
+</html>
